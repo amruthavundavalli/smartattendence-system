@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance | Smart Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <h1>Smart Attendance</h1>
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="/students">Students</a>
+            <a href="/attendance" class="active">Attendance</a>
+            <a href="/reports">Reports</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-heading">
+            <div>
+                <h2>Attendance</h2>
+                <p>Record and review classroom attendance.</p>
+            </div>
+            <a class="button" href="{{ url_for('photo_attendance') }}">◎ Photo Attendance</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section class="card">
+            <h3>Manual Attendance</h3>
+            <p>Select a student to record attendance manually.</p>
+
+            {% if students %}
+                <form method="POST" action="/attendance">
+                    <label for="student_id">Select Student</label>
+                    <select id="student_id" name="student_id" required>
+                        <option value="">-- Choose a student --</option>
+                        {% for student in students %}
+                            <option value="{{ student.id }}">
+                                {{ student.name }} ({{ student.roll_number }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Mark Present</button>
+                </form>
+            {% else %}
+                <p>No students are registered yet.</p>
+                <a class="button" href="/add-student">Add Student</a>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h3>Attendance Records</h3>
+
+            {% if records %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Roll Number</th>
+                                <th>Department</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                                <tr>
+                                    <td>{{ record.name }}</td>
+                                    <td>{{ record.roll_number }}</td>
+                                    <td>{{ record.department or "-" }}</td>
+                                    <td>{{ record.date }}</td>
+                                    <td>{{ record.time }}</td>
+                                    <td>{{ record.status }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No attendance records yet.</p>
+                </div>
+            {% endif %}
+        </section>
+
+        <p class="note">
+            Face recognition is a prototype and can make mistakes. Check the
+            attendance records before relying on them.
+        </p>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

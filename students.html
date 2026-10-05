@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students | Smart Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <h1>Smart Attendance</h1>
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="/students" class="active">Students</a>
+            <a href="/attendance">Attendance</a>
+            <a href="/reports">Reports</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-heading">
+            <div>
+                <h2>Students</h2>
+                <p>Manage registered students and their face enrollment.</p>
+            </div>
+            <a class="button" href="/add-student">+ Add Student</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section class="card">
+            <h3>Face Recognition Setup</h3>
+            <p>
+                Enroll photos only with the student's permission. After enrolling
+                the students, train the model before starting photo attendance.
+            </p>
+            <form method="POST" action="{{ url_for('train_faces') }}">
+                <button type="submit">Train Face Model</button>
+            </form>
+            <p>
+                <a href="{{ url_for('photo_attendance') }}">Go to Photo Attendance →</a>
+            </p>
+        </section>
+
+        <section class="card">
+            <h3>Registered Students</h3>
+
+            {% if students %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Roll Number</th>
+                                <th>Department</th>
+                                <th>Email</th>
+                                <th>Face Enrollment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                                <tr>
+                                    <td>{{ student.id }}</td>
+                                    <td>{{ student.name }}</td>
+                                    <td>{{ student.roll_number }}</td>
+                                    <td>{{ student.department or "-" }}</td>
+                                    <td>{{ student.email or "-" }}</td>
+                                    <td>
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for('enroll_student', student_id=student.id) }}"
+                                            onsubmit="return confirm('Has this student given permission for photo enrollment?');"
+                                        >
+                                            <button type="submit">Enroll Photos</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <h3>No students added yet</h3>
+                    <p>Add a student to begin.</p>
+                    <a class="button" href="/add-student">Add Student</a>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

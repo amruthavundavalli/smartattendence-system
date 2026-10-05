@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Smart Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <h1>Smart Attendance System</h1>
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="/students">Students</a>
+            <a href="/attendance">Attendance</a>
+            <a href="/reports" class="active">Reports</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-heading">
+            <div>
+                <h2>Attendance Reports</h2>
+                <p>View the recorded attendance details.</p>
+            </div>
+        </div>
+
+        <section class="card">
+            <h3>Attendance Report</h3>
+
+            {% if records %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Roll Number</th>
+                                <th>Department</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                                <tr>
+                                    <td>{{ record.name }}</td>
+                                    <td>{{ record.roll_number }}</td>
+                                    <td>{{ record.department or "-" }}</td>
+                                    <td>{{ record.date }}</td>
+                                    <td>{{ record.time }}</td>
+                                    <td>{{ record.status }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <h3>No report data available</h3>
+                    <p>Attendance records will appear here after attendance is recorded.</p>
+                    <a class="button" href="/attendance">Go to Attendance</a>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Smart Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <h1>Smart Attendance</h1>
+        <nav>
+            <a href="/" class="active">Dashboard</a>
+            <a href="/students">Students</a>
+            <a href="/attendance">Attendance</a>
+            <a href="/reports">Reports</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="welcome-panel">
+            <p class="welcome-label">CLASSROOM MANAGEMENT</p>
+            <h2>Welcome to your dashboard</h2>
+            <p>Manage students and classroom attendance from one place.</p>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <p class="stat-label">ALL STUDENTS</p>
+                <h3>{{ stats.total_students }}</h3>
+                <p class="stat-description">Registered students</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-label">PRESENT TODAY</p>
+                <h3>{{ stats.present_today }}</h3>
+                <p class="stat-description">Attendance recorded today</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-label">ATTENDANCE RATE</p>
+                <h3>{{ stats.attendance_rate }}%</h3>
+                <p class="stat-description">Today's attendance</p>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <div class="section-heading">
+                <h2>Quick Actions</h2>
+                <p>Choose an action to continue.</p>
+            </div>
+
+            <div class="actions-grid">
+                <a class="action-card" href="/add-student">
+                    <span class="action-icon">＋</span>
+                    <span class="action-title">Add Student</span>
+                    <span class="action-description">Register a new student</span>
+                    <span class="action-arrow">→</span>
+                </a>
+
+                <a class="action-card" href="/students">
+                    <span class="action-icon">▤</span>
+                    <span class="action-title">Student Directory</span>
+                    <span class="action-description">View and enroll students</span>
+                    <span class="action-arrow">→</span>
+                </a>
+
+                <a class="action-card" href="/photo-attendance">
+                    <span class="action-icon">◎</span>
+                    <span class="action-title">Photo Attendance</span>
+                    <span class="action-description">Open the camera to recognize enrolled faces</span>
+                    <span class="action-arrow">→</span>
+                </a>
+
+                <a class="action-card" href="/attendance">
+                    <span class="action-icon">✓</span>
+                    <span class="action-title">Attendance Records</span>
+                    <span class="action-description">View and manually record attendance</span>
+                    <span class="action-arrow">→</span>
+                </a>
+
+                <a class="action-card" href="/reports">
+                    <span class="action-icon">▥</span>
+                    <span class="action-title">Reports</span>
+                    <span class="action-description">Review attendance history</span>
+                    <span class="action-arrow">→</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="info-panel">
+            <h2>Smart Classroom System</h2>
+            <p>
+                Enroll student photos with permission, train the local model,
+                and then use the camera for prototype face recognition.
+                Recognition can make mistakes, so review attendance records.
+            </p>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
