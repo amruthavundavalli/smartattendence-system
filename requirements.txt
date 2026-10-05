@@ -1,3 +1,4 @@
 Flask
-opencv-contrib-python
+opencv-contrib-python-headless
 numpy
+flask
